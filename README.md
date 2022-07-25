@@ -1,6 +1,6 @@
-# Классические задачи биоинформатики 
+# Classical bioinformatics problems 
 
-Реализация проекта DNA Analyzer.
+Implementation of the DNA Analyzer project.
 
 
 ## Contents
@@ -10,30 +10,28 @@
 2. [Chapter II](#chapter-ii) \
     2.1. [Information](#information)
 3. [Chapter III](#chapter-iii) \
-    3.1. [Part 1](#part-1-реализация-проекта-exact-dna-search)  
-	3.2. [Part 2](#part-2-реализация-проекта-nw-sequence-alignment)  
-	3.3. [Part 3](#part-3-соответствие-регулярным-выражениям)  
-	3.4. [Part 4](#part-4-k-подобные-строки)  
-	3.5. [Part 5](#part-5-дополнительно-минимальная-оконная-подстрока)  
-
+    3.1. [Part 1](#part-1-implementation-of-the-exact-dna-search-project)  
+	3.2. [Part 2](#part-2-implementation-of-the-nw-sequence-alignment-project)  
+	3.3. [Part 3](#part-3-matching-regular-expressions)  
+	3.4. [Part 4](#part-4-k-similar-strings)  
+	3.5. [Part 5](#part-5-bonus-minimum-window-substring)  
 
 ## Chapter I
 
-В очередной раз Еву занесло на новый странный проект, как это часто бывало в ее компании. В отдел исследований прикладной биоинформатики требовался человек способный писать непростые алгоритмы. В рамках сотрудничества с партнерской компанией в Британии они занимались проектом, позволяющим более качественно назначать пациентам лекарственные препараты, а для этого необходимо было реализовать тонну алгоритмов. Так как большинство из них уже было формализовано и не требовали особого знания биологии или погружения в тематику проекта, то можно было взять в помощь человека извне. \
-Все звезды сошлись именно на Еве. Пришелся кстати ее опыт в алгоритмике, а также опыт предыдущего взаимодействия с ребятами из Advanced Solutions Inc., теми самыми британскими партнерами, в рамках многострадальных задач по лабиринтам.
+Once again, Eve got into a strange new project, which happens often in her company. The Applied Bioinformatics Research department needed someone who could write complex algorithms. They were working with a partner company in Britain on a project that would allow for better prescribing of medications for patients, and that required a ton of algorithms. Since most of them were already formalized and did not require much knowledge of biology or immersion in the subject matter of the project, it was possible to take an outside person to help. \
+All the stars aligned for Eve. Her experience in algorithms came in handy, as did her previous interaction with the guys from Advanced Solutions Inc., those same British partners, as part of the long-suffering tasks on labyrinths.
 
-В отделе исследований прикладной биоинформатики, не смотря на ожидания Евы, не было людей в белых халатах или колбочек с опасными вирусами, которые способны закрыть население целой планеты по домам на несколько лет. Вместо этого здесь сидели те же самые программисты и что-то выискивали в длинных непонятных строчках на экранах своих компьютеров. Они даже находились всего на пару этажей выше Евы. Ей пришлось на время переехать сюда, чтобы ускорить процесс коммуникации. Ева не сильно расстраивалась по этому поводу, рассудительно решив, что может лишний раз подкачать свои навыки алгоритмики на этом проекте. Однако, она сильно сожалела, что так и не удалось забрать свое любимое кресло..
+No one in the Applied Bioinformatics Research department, despite Eve's expectations, was wearing white coats or carrying flasks with dangerous viruses that could lock the population of the entire planet at home for several years. Instead, the same programmers were sitting there, searching through long, incomprehensible strings on their computer screens. They were even only two floors above Eve. She had to move here for a while to speed up the communication process. Eve wasn't too upset about it, figuring she could pump up her algorithmic skills on this project one more time. However, she strongly regretted not being able to take her favorite chair with her...
 
 ## Introduction
 
-В данном проекте вам предстоит познакомиться с классическими задачами биоинформатики -- поиском подстроки и выравниванием последовательностей, а также прочими алгоритмами обработки строк.
-
-
+In this project you will be introduced to the classical bioinformatics problems of substring search and sequence alignment, as well as other string processing algorithms.
+ 
 ## Chapter II
 
 ## Information
 
-Важной частью современной биоинформатики является анализ молекулярных последовательностей. Последовательностями называют строки над произвольным фиксированным алфавитом, например над алфавитом `{ A, C, G, T}` (последовательности ДНК). Вот примеры последовательностей ДНК, являющиеся частями вируса ВИЧ:
+An important part of modern bioinformatics is the analysis of molecular sequences. Sequences are strings over an arbitrary fixed alphabet, such as the alphabet `{ A, C, G, T}` (DNA sequence). Here are examples of DNA sequences that are parts of the HIV virus:
 
 ```
 GGTCTCTCTGGTTAGACCAGATCTGAGC
@@ -41,21 +39,23 @@ CTGAGCCTGGGAGCTCTCTGGCTAACTAGGGAACCCACTG
 AAGCCTCAAT
 ```
 
-### Поиск подстроки
+### Substring search
 
-В анализе молекулярных последовательностей постоянно необходимо так или иначе сравнивать последовательности друг с другом. Например, бывает необходимо определить _точное совпадение_ двух строк, т.е. посимвольное совпадение строк одинакового размера. Более сложным, но реалистичным случаем является задача поиска подстроки, то есть поиска всех вхождений короткой строки (_needle_, "иголка") длины `m` в большую строку (_hay_, "сено") длины `n`, `m <= n`. Помимо биоинформатики, задача поиска подстроки в разных вариациях повсеместно встречается в различных задачах _полнотекстового поиска_.
+In molecular sequence analysis, it is constantly necessary to compare sequences with each other in one way or another. For example, sometimes it is necessary to determine the _exact match_ of two strings, i.e. a character-by-character match of strings with the same size. A more difficult but realistic case is the substring search task, that is, finding all occurrences of a short string (_needle_) of length `m` in a large string (_haystack_) of length `n`, `m <= n`. Besides bioinformatics, the substring search in different variations is common in various _full-text search_ tasks.
 
->*Пример:* \
->В строку `А роза упала на лапу Азора` подстрока `ла` входит дважды, на позицииях 11 и 17.
+>*Example:* \
+>In the string "Madam, I'm Adam" the substring `am' occurs twice, at positions 4 and 13.
 
->*Пример:* \
->Относительно короткая последовательность вируса ВИЧ, состоящая приблизительно из десяти тысяч нуклеотидов (полностью посмотреть ее можно [здесь](https://www.ncbi.nlm.nih.gov/nuccore/AF033819)), содержит два вхождения строки `AAGCCTCAAT`, состоящей из десяти нуклеотидов.
+>*Example:* \
+>The relatively short HIV virus sequence of approximately 10,000 nucleotides (see the full sequence [here](https://www.ncbi.nlm.nih.gov/nuccore/AF033819)) contains two occurrences of the string `AAGCCTCTCAAT` consisting of ten nucleotides.
 
-Наивные решения поиска подстроки эффективны, если строки достигают в размере тысяч символов; для строк размеров в миллионы и более символов, а также для массированного поиска большого количества запросов, brute-force алгоритмы могут быть слишком медленны. Эффективные алгоритмы поиска подстроки не вполне тривиальны; одним из простых, но относительно эффективных алгоритмов является алгоритм Рабина-Карпа. Этот алгоритм основан на идее  _хеширования_ подстрок длины `m`, то есть вычисления некоторой функции, которая каждой строке ставит в соответствие некоторое число (хеш). Совпадение хеша для подстроки из "сена" с хешом "иголки" потенциально указывает на вхождение подстроки. Алгоритм превосходит наивные решения для входных данных достаточного размера, если хеш некоторой подстроки можно подсчитать, зная хеш подстроки, идущей перед ней.
+Naive substring search solutions are effective when strings reach thousands of characters in size; for strings of millions of characters or more, and for a massive search of a large number of queries, brute-force algorithms may be too slow. Effective substring search algorithms are not entirely trivial. One simple but relatively effective algorithm is the Rabin-Karp algorithm. This algorithm is based on the idea of _hashing_ substrings of length `m`, that is, calculating some function that matches each string with some number (hash). 
 
-### Выравнивание последовательностей
+A match of the hash for the substring from "haystack" with the "needle" hash potentially indicates that the substring did occur. The algorithm surpasses naive solutions for input data of sufficient size if the hash of some substring can be computed by knowing the hash of the substring that comes before it.
 
-Молекулярные последовательности эволюционируют и изменяются со временем. В результате мутаций и других эволюционных событий, последовательности близких организмов со временем эволюционно отдаляются друг от друга и становятся все менее схожи. Для сравнения неидеально совпадающих последовательностей, алгоритмов точного поиска недостаточно; чтобы сопоставлять такие последовательности, применяют _выравнивание_. Выравниванием двух последовательностей называют их запись одну под другой, при которой в обе последовательности внесены дополнительные "пробелы", или "гэпы". Эти гэпы расставлены таким образом, чтобы стоящие друг под другом буквы последовательсностей совпадали. Например, выравнивание двух последовательностей `GGGCGACACTCCACCATAGA` и `GGCGACACCCACCATACAT` (небольшие кусочки из начала геномов двух версий вируса гепатита C), может выглядеть так:
+### Sequence alignment
+
+Molecular sequences evolve and change over time. As a result of mutations and other evolutionary changes, the sequences of closely related organisms become evolutionarily distant from each other over time and become less and less similar. To compare non-perfectly matched sequences, exact string-search algorithms are not enough. To match such sequences, an _alignment_ is used. Alignment of two sequences is their recording one under the other, in which additional  "gaps" are entered . These gaps are arranged in such a way that the letters of the sequences under each other match. For example, the alignment of two sequences `GGGCGACACTCCACCATAGA` and `GGCGACACCCACCATACAT` (small pieces taken from the beginning of two versions of the genomes of the hepatitis C virus), might look like this:
 
 ```
 GGGCGACACTCCACCATAGA-
@@ -63,103 +63,105 @@ GGGCGACACTCCACCATAGA-
 GG-CGACAC-CCACCATACAT
 ```
 
-Заметьте, что двум последовательностям может соответствовать большое число разных выравниваний (с разным количество совпадающих позиций). С биологической точки зрения выравнивание помогает определить те позиции в последовательностях, которые наиболее вероятно являются гомологичными, то есть имеющими общее эволюционное происхождение. В учебных целях мы можем полагать, что целью выравнивания является максимизация количества совпадающих символов в выравнивании и минимизация несовпадающих. Классическим решением данной задачи является алгоритм Нидлмана-Вунша, предложенный в 1970 году и основанный на идее динамического программирования. Данный алгоритм полагается на функцию "похожести", которая оценивает "стоимость" ("скор" от англ. "score") совпадения или не совпадения симоволов, записанных друг под другом, и максимизирует общую "похожесть" выравнивания.
+Note that two sequences can correspond to a large number of different alignments (with different numbers of matching positions). From a biological point of view, alignment helps to identify those positions in the sequences that are most likely to be homologous, i. e., having a common evolutionary origin.
 
->*Пример:* \
->Стоимость совпадения 1, стоимость несовпадения -1, стоимость гэпа -2. Тогда выравнивание из предыдущего примера достигает общей стоимости 10: 17 совпадающий символов, 1 несовпадающий, 3 гэпа.
+For learning purposes, we can assume that the goal of alignment is to maximize the number of matching characters in an alignment and minimize the number of non-matching ones. The classic solution to this problem is the Needleman-Wunsch algorithm, proposed in 1970 and based on the idea of dynamic programming. This algorithm relies on a "similarity" function that estimates the cost ("score") of matching or mismatching characters written under each other, and maximizes the overall "similarity" of the alignment.
 
+>*Example:* \
+>The score of matching is 1, the score of mismatching is -1, the score of a gap is -2. Then the alignment from the previous example reaches a total score of 10: 17 matching characters, 1 mismatching, 3 gaps.
 
-Продвинутые версии этого алгоритма используют матрицы похожести, где стоимость совпадений и несовпадений может различаться для разных пар символов. 
-
+Advanced versions of this algorithm use similarity matrices, where the score of matches and mismatches can be different for different pairs of characters. 
 
 ## Chapter III
 
-**Общие** указания для выполнения всех частей:
-- Программа должна быть разработана на языке C++ стандарта C++17
-- Код программы должен находиться в папке src
-- При написании кода необходимо придерживаться Google Style
-- Не использовать устаревшие и выведенные из употребления конструкции языка и библиотечные функции
-- Предусмотреть Makefile для сборки библиотеки и тестов (с целями all, clean, tests, app)
-- Должно быть обеспечено полное покрытие unit-тестами всех функций/методов, используемых при реализации каждого задания
-- У программы должен быть предусмотрен консольный интерфейс
+**General** instructions for all parts:
 
-## Part 1. Реализация проекта Exact DNA search
+- The program must be developed in C++ language of C++17 standard 
+- The program code must be located in the src folder
+- When writing code it is necessary to follow Google Style
+- Do not use outdated language constructs and libraries
+- Provide a Makefile for building the program and tests (with targets all, clean, tests, app)
+- Prepare full coverage of all functions/methods used in the implementation of each task with unit-tests
+ 
+ 
+- The program must have a console interface
 
-Разработать программу для полнотекстового поиска при помощи **алгоритма Рабина-Карпа**. \
-Программа принимает на вход *два* файла. Они содержат последовательности `a` и `b` длины `n <= 10000` и `m <= 100` соответственно, `m <= n`. Выходом программы является список позиций строки `a`, на которых `b` входит в `a`.
+## Part 1. Implementation of the Exact DNA search project
 
-Пример входа: \
-Файл `datasets/HIV-1_AF033819.3.txt` и файл со следующим содержимым:
+Develop a program for a full-text search using the **Rabin-Karp algorithm**. \
+The program takes *two* files as input. They contain sequences `a` and `b` of length `n <= 10000` and `m <= 100` respectively, `m <= n`. The output of the program is a list of positions of the string `a` at which `b` occurs in `a`. 
+Input example: \
+File `datasets/HIV-1_AF033819.3.txt` and a file with the following contents:
 ```
 AAGCCTCAATAAAGCTT
 ```
 
-Пример выхода:
+Output example:
 ```
 65 9150 9182
 ```
 
-#### Проверка времени выполнения и потребления памяти
+#### Execution time and memory consumption check
 
-На Unix-like операционных системах есть утилита `/usr/bin/time` (не путать с командой `time` в `bash`). Проверить время работы и потребление программы можно при помощи следующей команды:
+The Unix-like operating systems have a utility `/usr/bin/time` (not to be confused with the `time` command in `bash`). You can check the execution time and consumption of a program with the following command:
 ```
 /usr/bin/time -v PROGRAM
 ```
-где `PROGRAM` соответствует названию исполняемого файла. Вывод `/usr/bin/time` может выглядеть приблизительно так:
+where `PROGRAM` corresponds to the name of the executable file. 
+The output of `/usr/bin/time` might look like this:
 ```
-	Command being timed: "./nw"
-	User time (seconds): 0.00
-	System time (seconds): 0.00
-	Percent of CPU this job got: 75%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.00
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 3284
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 137
-	Voluntary context switches: 1
-	Involuntary context switches: 0
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 0
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
+    Command being timed: "./nw"
+    User time (seconds): 0.00
+    System time (seconds): 0.00
+    Percent of CPU this job got: 75%
+    Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.00
+    Average shared text size (kbytes): 0
+    Average unshared data size (kbytes): 0
+    Average stack size (kbytes): 0
+    Average total size (kbytes): 0
+    Maximum resident set size (kbytes): 3284
+    Average resident set size (kbytes): 0
+    Major (requiring I/O) page faults: 0
+    Minor (reclaiming a frame) page faults: 137
+    Voluntary context switches: 1
+    Involuntary context switches: 0
+    Swaps: 0
+    File system inputs: 0
+    File system outputs: 0
+    Socket messages sent: 0
+    Socket messages received: 0
+    Signals delivered: 0
+    Page size (bytes): 4096
+    Exit status: 0
 ```
-Вас интересует время (`Elapsed (wall clock) time`) и память (`Maximum resident set size (kbytes)`).
+You are interested in time (`Elapsed (wall clock) time`) and memory (`Maximum resident set size (kbytes)`).
 
-Максимальное время работы: 1 сек \
-Максимальное потребление памяти: 128 Мб
+Maximum execution time: 1 sec \
+Maximum memory consumption: 128 MB
 
-## Part 2. Реализация проекта NW sequence alignment
+## Part 2. Implementation of the NW sequence alignment project
 
-### Part 2.1 Вычисление оптимального скора
+### Part 2.1 Calculation of the optimal score
 
-Разработать программу для выравнивания двух последовательностей над алфавитом `{A, C, G, T}`. \
-Входом программы является файл с *тремя* строчками. Первая строка содержит три числа - стоимость совпадения, несовпадения и гэпа. Две следующие строки -- последовательности для выравнивания. Выходом программы является *одно* число -- значение скора для наиболее оптимального выравнивания. 
+Develop a program to align two sequences over the alphabet `{A, C, G, T}`. \
+The input of the program is a file with *three* strings. The first string contains three numbers -- the score of the match, mismatch, and gap. The next two strings are the sequences for the alignment. The output of the program is *one* number -- the value of the score for the best alignment. 
 
-Пример ввода:
+Input example:
 ```
 1 -1 -2
 GGGCGACACTCCACCATAGA
 GGCGACACCCACCATACAT
 ```
 
-Пример вывода:
+Output example:
 ```
 10
 ```
 
-### Part 2.2 Восстановление оптимального выравнивания
+### Part 2.2 Recovering optimal alignment
 
-Добавить в программу восстановление оптимального выравнивания, для которого достигается максимальный скор. Выходом программы является значение максимального скора, а под ним -- запись двух строк одна под другой с внесенными в строки гэпами. Совпадающие символы на одинаковых позициях отмечаются вертикальной чертой.
-
-Пример вывода:
+Add to the program a recovery of the optimal alignment, for which the maximum score is reached. The output of the program is the value of maximum score, and under it is a record of two strings one under the other with gaps. Matching characters at the same positions are marked with a vertical line. 
+Output example:
 ```
 10
 GGGCGACACTCCACCATAGA-
@@ -167,78 +169,76 @@ GGGCGACACTCCACCATAGA-
 GG-CGACAC-CCACCATACAT
 ```
 
-#### Проверка времени выполнения и потребления памяти
+#### Execution time and memory consumption check
 
-См. инструкции к [первой задаче](#part-1-реализация-проекта-exact-dna-search).
+See instructions for the [first task](#part-1-implementation-of-the-exact-dna-search-project).
 
-Максимальное время работы: 1 сек \
-Максимальное потребление памяти: 128 Мб
+Maximum execution time: 1 sec \
+Maximum memory consumption: 128 MB
 
-## Part 3. Соответствие регулярным выражениям
+## Part 3. Matching regular expressions
 
-Разработать программу для проверки соответствия последовательности над алфавитом `{A, C, G, T}` регулярному выражению. \
-Входом программы является файл с *двумя* строчками. Первая строка содержит последовательность, для которой будет проверяться соответствие. Вторая строка содержит паттерн, содержащий символы из алфавита и следующие символы:
-- `.` -- соответствует любому отдельному символу из алфавита;
-- `?` -- соответствует любому отдельному символу из алфавита или отсутствию символа;
-- `+` -- соответствует нулю или более повторений предыдущего элемента;
-- `*` -- соответствует любой последовательности символов из алфавита или отсутствию символов.
+Develop a program to check if a sequence over the alphabet `{A, C, G, T}` matches a regular expression. \
+The input of the program is a file with *two* strings. The first string contains the sequence for which a match will be checked. The second string contains a pattern containing characters from the alphabet and the following characters:
 
-Выходом программы является *Истина*/*Ложь* - соответствует ли заданная последовательность паттерну.
+- `.` -- corresponds to any single character in the alphabet;
+- `?` -- corresponds to any single character in the alphabet or the absence of a character;
+- `+` --  corresponds to zero or more repetitions of the previous element;
+- `*` -- corresponds to any sequence of characters from the alphabet or to the absence of characters.
 
-Пример ввода:
+The output of the program is *True*/*False* - whether the given sequence matches the pattern.
+
+Input example:
 ```
 GGCGACACCCACCATACAT
 G?G*AC+A*A.
 ```
-
-Пример вывода:
+Output example:
 ```
 True
 ```
 
-**Внимание: При выполнении этой части запрещено использовать готовые библиотеки для работы с регулярными выражениями, такие как _regex_ или _PCRE_**
+**Note: Do not use ready-made libraries for regular expressions, such as _regex_ or _PCRE_**, in this part.
 
-## Part 4. K-подобные строки
+## Part 4. K-similar strings
 
-Строки s1 и s2 k-подобны (для некоторого неотрицательного целого числа *k*), если возможно поменять местами две буквы в s1 ровно *k* раз так, чтобы результирующая строка была равна s2.
+Strings s1 and s2 are k-similar (for some non-negative integer *k*) if we can swap the positions of two letters in s1 exactly *k* times so that the resulting string equals s2.
+Develop a program to check the k-similarity of two sequences over the alphabet `{A, C, G, T}`. \
+The input of the program is a file with *two* strings. The output of the program is the smallest *k* for which s1 and s2 are k-similar. If the strings are not anagrams, output an error message.
 
-Разработать программу для проверки k-подобия двух последовательностей над алфавитом `{A, C, G, T}`. \
-Входом программы является файл с *двумя* строчками. Выходом программы является наименьшее *k*, для которого s1 и s2 k-подобны. Если строки не являются анаграммами, вывести сообщение об ошибке.
-
-Пример ввода:
+Input example:
 ```
 GGCGACACC
 AGCCGCGAC
 ```
 
-Пример вывода:
+Output example:
 ```
 3
 ```
 
+## Part 5. Bonus. Minimum window substring
 
-## Part 5. Дополнительно. Минимальная оконная подстрока
+A substring is a continuous sequence of characters within a string.
 
-Подстрока - это непрерывная последовательность символов внутри строки.
+Develop a program for minimum window substring for a sequence over the alphabet `{A, C, G, T}`. \
+The input of the program is a file with *two* strings s and t. The window substring of string s is the substring containing all characters in string t (including duplicates).
+The output of the program is a window substring of minimum length. If there is no window substring, return an empty string.
 
-Разработать программу для минимальной оконной подстроки для последовательности над алфавитом `{A, C, G, T}`. \
-Входом программы является файл с *двумя* строчками s и t. Оконной подстрокой строки s называется подстрока, содержащая все символы, входящие в строку t (включая дубликаты).
-Выходом программы является оконная подстрока минимальной длины. Если оконной подстроки нет, вернуть пустую строку.
-
-Пример ввода:
+Input example:
 ```
 GGCGACACCCACCATACAT
 TGT
 ```
 
-Пример вывода:
+Output example:
 ```
 GACACCCACCATACAT
 ```
 
-*Пояснение:*
+*Explanation:*
 
-Подстрока, являющаяся результатом, должна содержать символы `T`, `G`, `T`. Подходящими подстроками являются следующие:
+The resulting substring must contain the characters `T`, `G`, `T`. The following substrings are suitable:
 ```
 GACACCCACCATACAT
 CGACACCCACCATACAT
@@ -246,4 +246,4 @@ GCGACACCCACCATACAT
 GGCGACACCCACCATACAT
 ```
 
-При этом результатом является подстрока _минимальной_ длины, поэтому выбираем первый вариант.
+The result is a substring of _minimum_ length, so we choose the first one.
