@@ -16,7 +16,9 @@ Implementation of the DNA Analyzer project.
 	3.4. [Part 4](#part-4-k-similar-strings)  
 	3.5. [Part 5](#part-5-bonus-minimum-window-substring)  
 
-## Chapter I
+## Chapter I 
+
+![Classical bioinformatics problems](misc/images/DNA_Analyzer.JPG)
 
 Once again, Eve got into a strange new project, which happens often in her company. The Applied Bioinformatics Research department needed someone who could write complex algorithms. They were working with a partner company in Britain on a project that would allow for better prescribing of medications for patients, and that required a ton of algorithms. Since most of them were already formalized and did not require much knowledge of biology or immersion in the subject matter of the project, it was possible to take an outside person to help. \
 All the stars aligned for Eve. Her experience in algorithms came in handy, as did her previous interaction with the guys from Advanced Solutions Inc., those same British partners, as part of the long-suffering tasks on labyrinths.
