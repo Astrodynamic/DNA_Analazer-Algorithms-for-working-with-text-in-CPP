@@ -16,6 +16,7 @@ Implementation of the DNA Analyzer project.
 	3.4. [Part 4](#part-4-k-similar-strings)  
 	3.5. [Part 5](#part-5-bonus-minimum-window-substring)  
 
+
 ## Chapter I 
 
 ![Classical bioinformatics problems](misc/images/DNA_Analyzer.JPG)
@@ -28,7 +29,8 @@ No one in the Applied Bioinformatics Research department, despite Eve's expectat
 ## Introduction
 
 In this project you will be introduced to the classical bioinformatics problems of substring search and sequence alignment, as well as other string processing algorithms.
- 
+
+
 ## Chapter II
 
 ## Information
@@ -74,6 +76,7 @@ For learning purposes, we can assume that the goal of alignment is to maximize t
 
 Advanced versions of this algorithm use similarity matrices, where the score of matches and mismatches can be different for different pairs of characters. 
 
+
 ## Chapter III
 
 **General** instructions for all parts:
@@ -100,7 +103,7 @@ AAGCCTCAATAAAGCTT
 
 Output example:
 ```
-65 9150 9182
+65 9150
 ```
 
 #### Execution time and memory consumption check
