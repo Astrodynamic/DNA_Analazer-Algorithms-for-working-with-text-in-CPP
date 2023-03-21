@@ -254,4 +254,4 @@ GGCGACACCCACCATACAT
 The result is a substring of _minimum_ length, so we choose the first one.
 
 
-💡 [Tap here](https://forms.yandex.ru/u/635ab18369387220075b7edd/) **to leave your feedback on the project**. Pedago Team really tries to make your educational experience better.
+💡 [Tap here](https://forms.yandex.ru/cloud/64181f6690fa7b277e57925f/) **to leave your feedback on the project**. Pedago Team really tries to make your educational experience better.
