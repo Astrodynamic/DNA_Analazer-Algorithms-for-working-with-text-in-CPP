@@ -28,7 +28,7 @@ No one in the Applied Bioinformatics Research department, despite Eve's expectat
 ## Introduction
 
 In this project you will be introduced to the classical bioinformatics problems of substring search and sequence alignment, as well as other string processing algorithms.
- 
+
 ## Chapter II
 
 ## Information
@@ -91,7 +91,7 @@ Advanced versions of this algorithm use similarity matrices, where the score of 
 ## Part 1. Implementation of the Exact DNA search project
 
 Develop a program for a full-text search using the **Rabin-Karp algorithm**. \
-The program takes *two* files as input. They contain sequences `a` and `b` of length `n <= 10000` and `m <= 100` respectively, `m <= n`. The output of the program is a list of positions of the string `a` at which `b` occurs in `a`. 
+The program takes *two* files as input. They contain sequences `a` and `b` of length `n <= 10000` and `m <= 100` respectively, `m <= n`. The output of the program is a list of positions of the string `a` at which `b` occurs in `a`.
 Input example: \
 File `datasets/HIV-1_AF033819.3.txt` and a file with the following contents:
 ```
@@ -162,7 +162,7 @@ Output example:
 
 ### Part 2.2 Recovering optimal alignment
 
-Add to the program a recovery of the optimal alignment, for which the maximum score is reached. The output of the program is the value of maximum score, and under it is a record of two strings one under the other with gaps. Matching characters at the same positions are marked with a vertical line. 
+Add to the program a recovery of the optimal alignment, for which the maximum score is reached. The output of the program is the value of maximum score, and under it is a record of two strings one under the other with gaps. Matching characters at the same positions are marked with a vertical line.
 Output example:
 ```
 10
