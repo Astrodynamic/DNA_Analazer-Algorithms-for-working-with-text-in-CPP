@@ -1,53 +1,40 @@
 #include "DNA_Analyzer.h"
 
-void DNA_Analyzer::RabinKarpAlgorithm(const std::filesystem::path& path_1,
-                                      const std::filesystem::path& path_2) {
-  std::ifstream file_a(path_1), file_b(path_2);
+void DNA_Analyzer::RabinKarpAlgorithm(const std::filesystem::path& path_1, const std::filesystem::path& path_2) {
+  std::string text = std::move(ReadFile(path_1));
+  std::string samp = std::move(ReadFile(path_2));
 
-  std::string a((std::istreambuf_iterator<char>(file_a)),
-                std::istreambuf_iterator<char>());
-  std::string b((std::istreambuf_iterator<char>(file_b)),
-                std::istreambuf_iterator<char>());
+  const std::size_t text_size = text.size();
+  const std::size_t samp_size = samp.size();
 
-  const int p = 31;
-  const int m = 1e9 + 9;
-  int S = a.size(), T = b.size();
+  std::vector<std::size_t> exp(std::max(text_size, samp_size), 1);
+  std::transform(exp.begin(), exp.end() - 1, exp.begin() + 1, [this](std::size_t &item) { return (item * rk_base) % rk_mod; });
 
-  std::vector<long long> p_pow(std::max(S, T));
-  p_pow[0] = 1;
-  for (int i = 1; i < (int)p_pow.size(); i++) {
-    p_pow[i] = (p_pow[i - 1] * p) % m;
-  }
+  std::vector<std::size_t> hash_text(text_size + 1, 0);
+  CalculateMassHash(text, hash_text, text_size, exp);
 
-  std::unordered_map<char, int> code_map{
-      {'A', 1}, {'C', 2}, {'G', 3}, {'T', 4}};
+  std::vector<std::size_t> hash_samp(samp_size + 1, 0);
+  CalculateMassHash(samp, hash_samp, samp_size, exp);
 
-  std::vector<long long> h(S + 1, 0);
-  for (int i = 0; i < S; i++) {
-    char c = a[i];
-    int code = code_map[c];
-    h[i + 1] = (h[i] + code * p_pow[i]) % m;
-  }
-
-  long long h_s = 0;
-  for (int i = 0; i < T; i++) {
-    char c = b[i];
-    int code = code_map[c];
-    h_s = (h_s + code * p_pow[i]) % m;
-  }
-
-  std::vector<int> positions;
-  for (int i = 0; i + T - 1 < S; i++) {
-    long long cur_h = (h[i + T] + m - h[i]) % m;
-    if (cur_h == h_s * p_pow[i] % m) {
-      positions.push_back(i);
+  for (std::size_t i = 0; i + samp_size - 1 < text_size; ++i) {
+    std::size_t hash_curr = (hash_text[i + samp_size] + rk_mod - hash_text[i]) % rk_mod;
+    if ((hash_curr == (hash_samp[samp_size] * exp[i] % rk_mod)) && text.substr(i, samp_size) == samp) {
+      std::cout << i << " ";
     }
   }
-
-  for (auto& it : positions) {
-    std::cout << it << " ";
-  }
   std::cout << std::endl;
+}
+
+void DNA_Analyzer::CalculateMassHash(const std::string &src, std::vector<std::size_t> &hash, const std::size_t size, const std::vector<std::size_t> &exp) {
+  static std::unordered_map<char, std::size_t> code{{'A', 1}, {'C', 2}, {'G', 3}, {'T', 4}};
+  for (std::size_t i = 0; i < size; ++i) {
+    hash[i + 1] = (hash[i] + code[src[i]] * exp[i]) % rk_mod;
+  }
+}
+
+std::string DNA_Analyzer::ReadFile(const std::filesystem::path& path) {
+  std::ifstream file(path);
+  return std::string((std::istreambuf_iterator<char>(file)), {});
 }
 
 void DNA_Analyzer::NWAlgorithm(const std::filesystem::path& path) {
@@ -154,8 +141,7 @@ bool DNA_Analyzer::isMatch(std::string s, std::string p) {
       if (s[j - 1] == p[i - 1] || p[i - 1] == '.')
         dp[i][j] = dp[i - 1][j - 1];
       else if (p[i - 1] == '*') {
-        dp[i][j] = dp[i - 2][j] ||
-                   (dp[i][j - 1] && (s[j - 1] == p[i - 2] || p[i - 2] == '.'));
+        dp[i][j] = dp[i - 2][j] || (dp[i][j - 1] && (s[j - 1] == p[i - 2] || p[i - 2] == '.'));
       } else if (p[i - 1] == '?') {
         dp[i][j] = dp[i - 1][j - 1] || dp[i - 1][j] || dp[i][j - 1];
       }
