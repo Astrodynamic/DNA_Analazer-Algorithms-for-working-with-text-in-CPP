@@ -16,7 +16,7 @@ const std::size_t AbstractInterface::ShowMenu(const std::string &menu, const std
   return items ? CheckInputItem(-1, items) : 0;
 }
 
-[[nodiscard]] const std::size_t AbstractInterface::CheckInputItem(const std::int64_t min, const std::int64_t max) {
+[[nodiscard]] const std::int64_t AbstractInterface::CheckInputItem(const std::int64_t min, const std::int64_t max) {
   std::string line;
   std::getline(std::cin, line);
 
