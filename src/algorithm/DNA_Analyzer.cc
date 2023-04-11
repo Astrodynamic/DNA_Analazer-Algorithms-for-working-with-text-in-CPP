@@ -16,19 +16,18 @@ void DNA_Analyzer::RabinKarpAlgorithm(const std::filesystem::path& path_1, const
   std::vector<std::size_t> hash_samp(samp_size + 1, 0);
   CalculateMassHash(samp, hash_samp, samp_size, exp);
 
-  for (std::size_t i = 0; i + samp_size - 1 < text_size; ++i) {
-    std::size_t hash_curr = (hash_text[i + samp_size] + rk_mod - hash_text[i]) % rk_mod;
-    if ((hash_curr == (hash_samp[samp_size] * exp[i] % rk_mod)) && text.substr(i, samp_size) == samp) {
-      std::cout << i << " ";
+  for (std::size_t idx = 0; idx + samp_size - 1 < text_size; ++idx) {
+    std::size_t hash_curr = (hash_text[idx + samp_size] + rk_mod - hash_text[idx]) % rk_mod;
+    if ((hash_curr == (hash_samp[samp_size] * exp[idx] % rk_mod)) && text.substr(idx, samp_size) == samp) {
+      std::cout << idx << " ";
     }
   }
   std::cout << std::endl;
 }
 
 void DNA_Analyzer::CalculateMassHash(const std::string &src, std::vector<std::size_t> &hash, const std::size_t size, const std::vector<std::size_t> &exp) {
-  static std::unordered_map<char, std::size_t> code{{'A', 1}, {'C', 2}, {'G', 3}, {'T', 4}};
   for (std::size_t i = 0; i < size; ++i) {
-    hash[i + 1] = (hash[i] + code[src[i]] * exp[i]) % rk_mod;
+    hash[i + 1] = (hash[i] + src[i] * exp[i]) % rk_mod;
   }
 }
 
