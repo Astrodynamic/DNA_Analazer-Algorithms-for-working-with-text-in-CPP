@@ -45,8 +45,8 @@ class DNA_Analyzer {
   void PrintNWResult(const std::array<std::string, 3> &alig, const int &score);
   void InitializeWeights();
 
-  
-  bool isMatch(std::string s, std::string p);
+
+  char symbol(char c);
   int kSimilarity(std::string s1, std::string s2);
   std::string minWindowSubstring(std::string s, std::string t);
 };

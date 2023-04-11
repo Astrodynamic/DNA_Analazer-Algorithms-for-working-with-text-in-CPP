@@ -140,31 +140,53 @@ void DNA_Analyzer::PrintNWResult(const std::array<std::string, 3> &alig, const i
 
 void DNA_Analyzer::RegexAlgorithm(const std::filesystem::path& path) {
   std::ifstream file(path);
-  std::string s, p;
-  file >> s >> p;
-  std::cout << isMatch(s, p) << std::endl;
-}
+  std::string seq, pattern;
+  file >> seq >> pattern;
 
-bool DNA_Analyzer::isMatch(std::string s, std::string p) {
-  int m = p.size(), n = s.size();
-  std::vector<std::vector<bool>> dp(m + 1, std::vector<bool>(n + 1));
+  std::size_t n = seq.size();
+  std::size_t m = pattern.size();
+
+  std::vector<std::vector<bool>> dp(n + 1, std::vector<bool>(m + 1, false));
   dp[0][0] = true;
-  for (int i = 1; i <= m; i++) {
-    if (p[i - 1] == '*') dp[i][0] = dp[i - 2][0];
+
+  // Обработка случая пустой строки
+  for (std::size_t j = 2; j <= m; j++) {
+    if (pattern[j - 1] == '*' && dp[0][j - 2]) {
+      dp[0][j] = true;
+    }
   }
-  for (int i = 1; i <= m; i++) {
-    for (int j = 1; j <= n; j++) {
-      if (s[j - 1] == p[i - 1] || p[i - 1] == '.')
+
+  // Заполнение таблицы по переходам для i >= 1 и j >= 1
+  for (std::size_t i = 1; i <= n; i++) {
+    for (std::size_t j = 1; j <= m; j++) {
+      if (symbol(seq[i - 1]) == symbol(pattern[j - 1]) || pattern[j - 1] == '.') {
+        // Первый тип перехода
         dp[i][j] = dp[i - 1][j - 1];
-      else if (p[i - 1] == '*') {
-        dp[i][j] = dp[i - 2][j] ||
-                   (dp[i][j - 1] && (s[j - 1] == p[i - 2] || p[i - 2] == '.'));
-      } else if (p[i - 1] == '?') {
-        dp[i][j] = dp[i - 1][j - 1] || dp[i - 1][j] || dp[i][j - 1];
+      } else if (pattern[j - 1] == '?') {
+        // Второй тип перехода
+        dp[i][j] = dp[i - 1][j - 1] || dp[i][j - 1];
+      } else if (pattern[j - 1] == '*') {
+        // Третий тип перехода
+        if (dp[i][j - 2]) {
+          dp[i][j] = true;
+        } else if (symbol(seq[i - 1]) == symbol(pattern[j - 2]) || pattern[j - 2] == '.') {
+          dp[i][j] = dp[i - 1][j];
+        }
+      } else if (pattern[j - 1] == '+') {
+        // Четвертый тип перехода
+        dp[i][j] = dp[i - 1][j] && (symbol(seq[i - 1]) == symbol(pattern[j - 2]) || pattern[j - 2] == '.');
       }
     }
   }
-  return dp[m][n];
+
+  std::cout << dp[n][m] << std::endl;
+}
+
+char DNA_Analyzer::symbol(char c) {
+  if (c == 'A' || c == 'C' || c == 'G' || c == 'T') {
+    return c;
+  }
+  return '\0';
 }
 
 void DNA_Analyzer::KSimilarAlgorithm(const std::filesystem::path& path) {
