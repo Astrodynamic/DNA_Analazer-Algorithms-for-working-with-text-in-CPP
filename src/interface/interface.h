@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ainterface.h"
 #include "DNA_Analyzer.h"
+#include "ainterface.h"
 
 class Interface final : virtual public AbstractInterface {
  public:
@@ -36,6 +36,10 @@ class Interface final : virtual public AbstractInterface {
   DNA_Analyzer m_analyzer;
 
   void InitFuncMenus();
-  const bool RunProcessFile1arg(std::function<void(const std::filesystem::path&)> func);
-  const bool RunProcessFile2arg(std::function<void(const std::filesystem::path&, const std::filesystem::path&)> func);
+  const bool RunProcessFile1arg(
+      std::function<void(const std::filesystem::path &)> func);
+  const bool RunProcessFile2arg(
+      std::function<void(const std::filesystem::path &,
+                         const std::filesystem::path &)>
+          func);
 };
