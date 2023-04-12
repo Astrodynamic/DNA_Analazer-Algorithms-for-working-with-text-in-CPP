@@ -143,50 +143,34 @@ void DNA_Analyzer::RegexAlgorithm(const std::filesystem::path& path) {
   std::string seq, pattern;
   file >> seq >> pattern;
 
-  std::size_t n = seq.size();
-  std::size_t m = pattern.size();
+  const std::size_t n = seq.size();
+  const std::size_t m = pattern.size();
 
   std::vector<std::vector<bool>> dp(n + 1, std::vector<bool>(m + 1, false));
   dp[0][0] = true;
 
-  // Обработка случая пустой строки
-  for (std::size_t j = 2; j <= m; j++) {
-    if (pattern[j - 1] == '*' && dp[0][j - 2]) {
-      dp[0][j] = true;
-    }
-  }
+  for (auto i = seq.begin(); i != seq.end(); ++i) {
+    const auto x = std::distance(seq.begin(), i) + 1;
+    for (auto j = pattern.begin(); j != pattern.end(); ++j) {
+      const auto y = std::distance(pattern.begin(), j) + 1;
 
-  // Заполнение таблицы по переходам для i >= 1 и j >= 1
-  for (std::size_t i = 1; i <= n; i++) {
-    for (std::size_t j = 1; j <= m; j++) {
-      if (symbol(seq[i - 1]) == symbol(pattern[j - 1]) || pattern[j - 1] == '.') {
-        // Первый тип перехода
-        dp[i][j] = dp[i - 1][j - 1];
-      } else if (pattern[j - 1] == '?') {
-        // Второй тип перехода
-        dp[i][j] = dp[i - 1][j - 1] || dp[i][j - 1];
-      } else if (pattern[j - 1] == '*') {
-        // Третий тип перехода
-        if (dp[i][j - 2]) {
-          dp[i][j] = true;
-        } else if (symbol(seq[i - 1]) == symbol(pattern[j - 2]) || pattern[j - 2] == '.') {
-          dp[i][j] = dp[i - 1][j];
-        }
-      } else if (pattern[j - 1] == '+') {
-        // Четвертый тип перехода
-        dp[i][j] = dp[i - 1][j] && (symbol(seq[i - 1]) == symbol(pattern[j - 2]) || pattern[j - 2] == '.');
+      if (symbol(*i) == symbol(*j) || *j == '.') {
+        dp[x][y] = dp[x - 1][y - 1];
+      } else if (*j == '?') {
+        dp[x][y] = dp[x - 1][y - 1] || dp[x][y - 1];
+      } else if (*j == '*') {
+        dp[x][y] = dp[x - 1][y - 1] || dp[x - 1][y];
+      } else if (*j == '+') {
+        dp[x][y] = (dp[x][y - 1] || dp[x - 1][y]) && (symbol(*i) == symbol(*(j - 1)) || *(j - 1) == '.');
       }
     }
   }
 
-  std::cout << dp[n][m] << std::endl;
+  std::cout << (dp[n][m] ? "True" : "False") << std::endl;
 }
 
 char DNA_Analyzer::symbol(char c) {
-  if (c == 'A' || c == 'C' || c == 'G' || c == 'T') {
-    return c;
-  }
-  return '\0';
+  return std::find(m_ABC.begin(), m_ABC.end(), c) != m_ABC.end() ? c : '\0';
 }
 
 void DNA_Analyzer::KSimilarAlgorithm(const std::filesystem::path& path) {

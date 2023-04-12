@@ -34,7 +34,7 @@ class DNA_Analyzer {
   const std::size_t m_rk_mod = 1e9 + 9;
   const std::size_t m_rk_base = 31;
 
-  std::array<int, 256> m_weights = {};
+  std::array<int, 256> m_weights = {'\0'};
 
   std::string ReadFile(const std::filesystem::path& path);
   void CalculateMassHash(const std::string &src, std::vector<std::size_t> &hash, const std::size_t size, const std::vector<std::size_t> &exp);
