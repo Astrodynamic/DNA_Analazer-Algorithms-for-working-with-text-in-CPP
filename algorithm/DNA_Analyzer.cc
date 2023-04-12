@@ -1,7 +1,8 @@
 #include "DNA_Analyzer.h"
 
-void DNA_Analyzer::RabinKarpAlgorithm(const std::filesystem::path& path_1,
-                                      const std::filesystem::path& path_2) {
+void DNA_Analyzer::RabinKarpAlgorithm(
+    const std::filesystem::path& path_1,
+    const std::filesystem::path& path_2) {
   std::string text = std::move(ReadFile(path_1));
   std::string samp = std::move(ReadFile(path_2));
 
@@ -9,10 +10,7 @@ void DNA_Analyzer::RabinKarpAlgorithm(const std::filesystem::path& path_1,
   const std::size_t samp_size = samp.size();
 
   std::vector<std::size_t> exp(std::max(text_size, samp_size), 1);
-  std::transform(exp.begin(), exp.end() - 1, exp.begin() + 1,
-                 [this](const std::size_t& item) {
-                   return (item * m_rk_base) % m_rk_mod;
-                 });
+  std::transform(exp.begin(), exp.end() - 1, exp.begin() + 1, [this](const std::size_t& item) { return (item * m_rk_base) % m_rk_mod; });
 
   std::vector<std::size_t> hash_text(text_size + 1, 0);
   CalculateMassHash(text, hash_text, text_size, exp);
@@ -21,20 +19,18 @@ void DNA_Analyzer::RabinKarpAlgorithm(const std::filesystem::path& path_1,
   CalculateMassHash(samp, hash_samp, samp_size, exp);
 
   for (std::size_t idx = 0; idx + samp_size - 1 < text_size; ++idx) {
-    std::size_t hash_curr =
-        (hash_text[idx + samp_size] + m_rk_mod - hash_text[idx]) % m_rk_mod;
-    if ((hash_curr == (hash_samp[samp_size] * exp[idx] % m_rk_mod)) &&
-        text.substr(idx, samp_size) == samp) {
+    std::size_t hash_curr = (hash_text[idx + samp_size] + m_rk_mod - hash_text[idx]) % m_rk_mod;
+    if ((hash_curr == (hash_samp[samp_size] * exp[idx] % m_rk_mod)) && text.substr(idx, samp_size) == samp) {
       std::cout << idx << " ";
     }
   }
   std::cout << std::endl;
 }
 
-void DNA_Analyzer::CalculateMassHash(const std::string& src,
-                                     std::vector<std::size_t>& hash,
-                                     const std::size_t size,
-                                     const std::vector<std::size_t>& exp) {
+void DNA_Analyzer::CalculateMassHash(
+    const std::string& src, std::vector<std::size_t>& hash,
+    const std::size_t size,
+    const std::vector<std::size_t>& exp) {
   for (std::size_t i = 0; i < size; ++i) {
     hash[i + 1] = (hash[i] + src[i] * exp[i]) % m_rk_mod;
   }
@@ -55,8 +51,8 @@ void DNA_Analyzer::NWAlgorithm(const std::filesystem::path& path) {
   PrintNWResult(alig, mat[seq[0].length()][seq[1].length()]);
 }
 
-std::pair<std::array<int, 3>, std::array<std::string, 2>>
-DNA_Analyzer::GetNWConfig(const std::filesystem::path& path) {
+std::pair<std::array<int, 3>, std::array<std::string, 2>> DNA_Analyzer::GetNWConfig(
+    const std::filesystem::path& path) {
   std::ifstream file(path);
 
   std::array<int, 3> conf;
@@ -77,7 +73,8 @@ void DNA_Analyzer::InitializeWeights() {
 }
 
 std::vector<std::vector<int>> DNA_Analyzer::InitScoreMatrix(
-    const std::array<int, 3>& conf, const std::size_t rows,
+    const std::array<int, 3>& conf,
+    const std::size_t rows,
     const std::size_t cols) {
   std::vector<std::vector<int>> mat(rows, std::vector<int>(cols, 0));
   for (std::size_t i = 0; i < rows; ++i) {
@@ -89,7 +86,8 @@ std::vector<std::vector<int>> DNA_Analyzer::InitScoreMatrix(
 }
 
 std::vector<std::vector<int>> DNA_Analyzer::InitAlighmentMatrix(
-    const std::array<int, 3>& conf, const std::array<std::string, 2>& seq,
+    const std::array<int, 3>& conf,
+    const std::array<std::string, 2>& seq,
     const std::vector<std::vector<int>>& score_mat) {
   const int rows = seq[0].length() + 1;
   const int cols = seq[1].length() + 1;
@@ -108,8 +106,7 @@ std::vector<std::vector<int>> DNA_Analyzer::InitAlighmentMatrix(
     for (int j = 1; j < cols; ++j) {
       const char c2 = seq[1][j - 1];
 
-      const int score1 =
-          mat[i - 1][j - 1] + score_mat[m_weights[c1]][m_weights[c2]];
+      const int score1 = mat[i - 1][j - 1] + score_mat[m_weights[c1]][m_weights[c2]];
       const int score2 = mat[i - 1][j] + conf[2];
       const int score3 = mat[i][j - 1] + conf[2];
 
@@ -129,9 +126,7 @@ std::array<std::string, 3> DNA_Analyzer::ComputeAlignedSequences(
   int i = seq[0].length(), j = seq[1].length();
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 &&
-        mat[i][j] ==
-            mat[i - 1][j - 1] +
-                score_mat[m_weights[seq[0][i - 1]]][m_weights[seq[1][j - 1]]]) {
+        mat[i][j] == mat[i - 1][j - 1] + score_mat[m_weights[seq[0][i - 1]]][m_weights[seq[1][j - 1]]]) {
       alig[0] += seq[0][--i];
       alig[2] += seq[1][--j];
     } else if (i > 0 && mat[i][j] == mat[i - 1][j] + conf[2]) {
@@ -151,8 +146,7 @@ std::array<std::string, 3> DNA_Analyzer::ComputeAlignedSequences(
   return alig;
 }
 
-void DNA_Analyzer::PrintNWResult(const std::array<std::string, 3>& alig,
-                                 const int& score) {
+void DNA_Analyzer::PrintNWResult(const std::array<std::string, 3>& alig, const int& score) {
   std::cout << "Max score: " << score << std::endl;
 
   std::cout << alig[0] << std::endl;
@@ -183,8 +177,7 @@ void DNA_Analyzer::RegexAlgorithm(const std::filesystem::path& path) {
       } else if (*j == '*') {
         dp[x][y] = dp[x - 1][y - 1] || dp[x - 1][y];
       } else if (*j == '+') {
-        dp[x][y] = (dp[x][y - 1] || dp[x - 1][y]) &&
-                   (symbol(*i) == symbol(*(j - 1)) || *(j - 1) == '.');
+        dp[x][y] = (dp[x][y - 1] || dp[x - 1][y]) && (symbol(*i) == symbol(*(j - 1)) || *(j - 1) == '.');
       }
     }
   }
@@ -251,8 +244,7 @@ void DNA_Analyzer::WindowAlgorithm(const std::filesystem::path& path) {
 
   std::unordered_map<char, int> mp;
   for (char c : t) mp[c]++;
-  int cnt = mp.size(), left = 0, right = 0, ansL = -1, ansR = -1,
-      minLen = INT_MAX;
+  int cnt = mp.size(), left = 0, right = 0, ansL = -1, ansR = -1, minLen = INT_MAX;
   while (right < s.size()) {
     if (mp.count(s[right])) {
       mp[s[right]]--;

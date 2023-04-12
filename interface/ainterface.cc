@@ -1,7 +1,6 @@
 #include "ainterface.h"
 
-const bool AbstractInterface::RunMenu(
-    const std::vector<std::function<bool(void)>> &func, std::size_t menu) {
+const bool AbstractInterface::RunMenu(const std::vector<std::function<bool(void)>> &func, std::size_t menu) {
   bool flag{};
   std::size_t item{};
   std::size_t items{func.size()};
@@ -12,20 +11,17 @@ const bool AbstractInterface::RunMenu(
   return !flag;
 }
 
-const std::size_t AbstractInterface::ShowMenu(const std::string &menu,
-                                              const std::size_t items) {
+const std::size_t AbstractInterface::ShowMenu(const std::string &menu, const std::size_t items) {
   std::cout << menu;
   return items ? CheckInputItem(-1, items) : 0;
 }
 
-[[nodiscard]] const std::int64_t AbstractInterface::CheckInputItem(
-    const std::int64_t min, const std::int64_t max) {
+[[nodiscard]] const std::int64_t AbstractInterface::CheckInputItem(const std::int64_t min, const std::int64_t max) {
   std::string line;
   std::getline(std::cin, line);
 
   std::int64_t result;
-  while (!sscanf(line.c_str(), "%lld", &result) || result <= min ||
-         result >= max) {
+  while (!sscanf(line.c_str(), "%lld", &result) || result <= min || result >= max) {
     std::cout << "Incorrect input, try again: ";
     std::getline(std::cin, line);
   }
@@ -33,8 +29,7 @@ const std::size_t AbstractInterface::ShowMenu(const std::string &menu,
   return result;
 }
 
-[[nodiscard]] std::pair<bool, std::filesystem::path>
-AbstractInterface::CheckInputPathFile() {
+[[nodiscard]] std::pair<bool, std::filesystem::path> AbstractInterface::CheckInputPathFile() {
   std::string line;
   std::getline(std::cin, line);
   std::filesystem::path path(line);
