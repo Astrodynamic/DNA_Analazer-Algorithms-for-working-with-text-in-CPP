@@ -6,6 +6,7 @@ clean:
 test:
 	cmake -S ./tests -B ./tests/build
 	cmake --build ./tests/build
+	./tests/build/TEST
 
 app:
 	cmake -S . -B build
