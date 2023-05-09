@@ -20,12 +20,12 @@ class AbstractInterface {
   virtual void Exec() = 0;
 
  protected:
-  const bool RunMenu(const std::vector<std::function<bool(void)>> &func, std::size_t menu);
-  const std::size_t ShowMenu(const std::string &menu, const std::size_t items = 0U);
+  bool RunMenu(const std::vector<std::function<bool(void)>> &func, std::size_t menu);
+  std::size_t ShowMenu(const std::string &menu, const std::size_t items = 0U);
 
-  [[nodiscard]] const std::int64_t CheckInputItem(const std::int64_t min, const std::int64_t max);
+  [[nodiscard]] std::int64_t CheckInputItem(const std::int64_t min, const std::int64_t max);
   [[nodiscard]] std::pair<bool, std::filesystem::path> CheckInputPathFile();
-  [[nodiscard]] const bool Exit();
+  [[nodiscard]] bool Exit();
 
   static const std::vector<std::string> m_menus;
   std::vector<std::vector<std::function<bool(void)>>> m_funcs;

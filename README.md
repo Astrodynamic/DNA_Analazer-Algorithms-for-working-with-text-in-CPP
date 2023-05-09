@@ -1,95 +1,170 @@
-![init](/img/init.png)
-## Part 1. Реализация алгоритма Рабина-Карпа
+# Text Algorithms in CPP
 
-Программа принимает на вход *два* файла. Они содержат последовательности `a` и `b` длины `n` и `m` соответственно, `m <= n`. Выходом программы является список позиций строки `a`, на которых `b` входит в `a`.
+Text Algorithms is a C++ project that implements substring search and sequence alignment algorithms. This project can be useful for bioinformatics and other full-text search tasks.
 
-Пример входа: \
-Файл `HIV-1_AF033819.3.txt` и файл со следующим содержимым:
-```
-AAGCCTCAATAAAGCTT
-```
+## Dependencies
 
-Пример выхода:
-```
-65 9150 9182
-```
+The project requires the following dependencies:
 
-## Part 2. Реализация алгоритма Нидлмана — Вунша
+- CMake >= 3.15
+- C++17-compatible compiler
 
-Программа для выравнивания двух последовательностей над алфавитом `{A, C, G, T}`. \
-Входом программы является файл с *тремя* строчками. Первая строка содержит три числа - стоимость совпадения, несовпадения и гэпа. Две следующие строки -- последовательности для выравнивания. Выходом программы является *одно* число -- значение скора для наиболее оптимального выравнивания. 
+## Build
 
-Пример ввода:
-```
-1 -1 -2
-GGGCGACACTCCACCATAGA
-GGCGACACCCACCATACAT
+To build the project, follow these steps:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/TextAlgorithms.git
 ```
 
-Добавить в программу восстановление оптимального выравнивания, для которого достигается максимальный скор. Выходом программы является значение максимального скора, а под ним -- запись двух строк одна под другой с внесенными в строки гэпами. Совпадающие символы на одинаковых позициях отмечаются вертикальной чертой.
+2. Navigate to the project directory:
 
-Пример вывода:
-```
-10
-GGGCGACACTCCACCATAGA-
-|| |||||| |||||||| |
-GG-CGACAC-CCACCATACAT
+```bash
+cd TextAlgorithms
 ```
 
-## Part 3. Соответствие регулярным выражениям
+3. Run the following commands:
 
-Программа для проверки соответствия последовательности над алфавитом `{A, C, G, T}` регулярному выражению. \
-Входом программы является файл с *двумя* строчками. Первая строка содержит последовательность, для которой будет проверяться соответствие. Вторая строка содержит паттерн, содержащий символы из алфавита и следующие символы:
-- `.` -- соответствует любому отдельному символу из алфавита;
-- `?` -- соответствует любому отдельному символу из алфавита или отсутствию символа;
-- `+` -- соответствует нулю или более повторений предыдущего элемента;
-- `*` -- соответствует любой последовательности символов из алфавита или отсутствию символов.
+```bash
+cmake -S . -B ./build
+cmake --build ./build
+```
 
-Выходом программы является *Истина*/*Ложь* - соответствует ли заданная последовательность паттерну.
+## Usage
 
-Пример ввода:
+
+<img align="center" src="img/init.png" alt="Alt Text" style="display:block; margin:auto;">
+
+
+### Substring Search
+
+The project implements the Rabin-Karp algorithm for substring search. To use it, include the `SubstringSearch.h` header and call the `rabinKarp` function with the haystack and needle strings:
+
+```cpp
+#include "SubstringSearch.h"
+
+// ...
+
+std::string haystack = "Madam, I'm Adam";
+std::string needle = "am";
+std::vector<int> matches = rabinKarp(haystack, needle);
+// matches contains the positions of the needle occurrences in the haystack
+```
+
+### Sequence Alignment
+
+The project implements the Needleman-Wunsch algorithm for sequence alignment. To use it, include the `SequenceAlignment.h` header and call the `needlemanWunsch` function with the two sequences and the similarity matrix:
+
+```cpp
+#include "SequenceAlignment.h"
+
+// ...
+
+std::string seq1 = "GGGCGACACTCCACCATAGA";
+std::string seq2 = "GGCGACACCCACCATACAT";
+std::vector<std::string> alignment = needlemanWunsch(seq1, seq2, similarityMatrix);
+// alignment contains the two sequences aligned with gaps
+```
+
+## Examples
+
+### Substring Search
+
+Find all occurrences of the string "AAGCCTCTCAAT" in the HIV virus sequence:
+
+```cpp
+#include "SubstringSearch.h"
+#include <fstream>
+#include <iostream>
+
+int main() {
+  std::ifstream file("HIV.txt");
+  std::string haystack((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+  std::string needle = "AAGCCTCTCAAT";
+  std::vector<int> matches = rabinKarp(haystack, needle);
+  for (int match : matches) {
+    std::cout << "Match at position " << match << std::endl;
+  }
+  return 0;
+}
+```
+
+### Sequence Alignment
+
+Align two DNA sequences using a similarity matrix:
+
+```cpp
+#include "SequenceAlignment.h"
+#include <iostream>
+
+int main() {
+  std::string seq1 = "GGGCGACACTCCACCATAGA";
+  std::string seq2 = "GGCGACACCCACCATACAT";
+  std::vector<std::string> alignment = needlemanWunsch(seq1, seq2, similarityMatrix);
+  std::cout << alignment[0] << std::endl << alignment[1] << std::endl;
+  return 0;
+}
+```
+
+### Matching regular expressions
+
+The program checks whether a sequence over the alphabet `{A, C, G, T}` matches a regular expression. \
+The input of the program is a file with *two* lines. The first line contains the sequence to be checked for a match. The second line contains a pattern that includes characters from the alphabet and the following characters:
+- `.` -- matches any single character from the alphabet;
+- `?` -- matches any single character from the alphabet or the absence of a character;
+- `+` -- matches zero or more repetitions of the previous element;
+- `*` -- matches any sequence of characters from the alphabet or the absence of characters.
+
+The output of the program is *True*/*False* - whether the given sequence matches the pattern.
+
+Example input:
 ```
 GGCGACACCCACCATACAT
 G?G*AC+A*A.
 ```
 
-Пример вывода:
+Example output:
 ```
 True
 ```
 
-## Part 4. K-подобные строки
+### K-similar strings
 
-Строки s1 и s2 k-подобны (для некоторого неотрицательного целого числа *k*), если возможно поменять местами две буквы в s1 ровно *k* раз так, чтобы результирующая строка была равна s2.
+Strings s1 and s2 are k-similar (for some non-negative integer *k*) if it is possible to swap two letters in s1 exactly *k* times so that the resulting string is equal to s2.
 
-Программа для проверки k-подобия двух последовательностей над алфавитом `{A, C, G, T}`. \
-Входом программы является файл с *двумя* строчками. Выходом программы является наименьшее *k*, для которого s1 и s2 k-подобны. Если строки не являются анаграммами, вывести сообщение об ошибке.
+The program checks k-similarity of two sequences over the alphabet `{A, C, G, T}`. \
+The input of the program is a file with *two* lines. The output of the program is the smallest *k* for which s1 and s2 are k-similar. If the strings are not anagrams, print an error message.
 
-Пример ввода:
+Example input:
 ```
 GGCGACACC
 AGCCGCGAC
 ```
 
-Пример вывода:
+Example output:
 ```
 3
 ```
 
+### Minimum Window Substring
 
-## Part 5. Минимальная оконная подстрока
+A program for finding the minimum window substring for a sequence over the alphabet `{A, C, G, T}`.
+The input to the program is a file containing *two* lines: s and t. A window substring of string s is a substring that contains all characters present in string t (including duplicates).
+The output of the program is the minimum length window substring. If there is no window substring, return an empty string.
 
-Программп для минимальной оконной подстроки для последовательности над алфавитом `{A, C, G, T}`. \
-Входом программы является файл с *двумя* строчками s и t. Оконной подстрокой строки s называется подстрока, содержащая все символы, входящие в строку t (включая дубликаты).
-Выходом программы является оконная подстрока минимальной длины. Если оконной подстроки нет, вернуть пустую строку.
-
-Пример ввода:
+Example input:
 ```
 GGCGACACCCACCATACAT
 TGT
 ```
 
-Пример вывода:
+Example output:
 ```
 GACACCCACCATACAT
 ```
+
+## License
+
+This project is licensed under the terms of the MIT license. See [LICENSE](LICENSE) for more information.

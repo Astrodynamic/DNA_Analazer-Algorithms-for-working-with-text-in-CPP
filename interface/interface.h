@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DNA_Analyzer.h"
+#include "model.h"
 #include "ainterface.h"
 
 class Interface final : virtual public AbstractInterface {
@@ -33,9 +33,9 @@ class Interface final : virtual public AbstractInterface {
     kCompletion
   };
 
-  DNA_Analyzer m_analyzer;
+  ModelAlgorithm m_analyzer;
 
   void InitFuncMenus();
-  const bool RunProcessFile1arg(std::function<void(const std::filesystem::path &)> func);
-  const bool RunProcessFile2arg(std::function<void(const std::filesystem::path &, const std::filesystem::path &)> func);
+  bool RunProcessFile1arg(std::function<void(const std::filesystem::path &)> func);
+  bool RunProcessFile2arg(std::function<void(const std::filesystem::path &, const std::filesystem::path &)> func);
 };

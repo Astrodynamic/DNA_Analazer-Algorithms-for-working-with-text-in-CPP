@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "DNA_Analyzer.h"
+#include "model.h"
 
-TEST(DNA_Analyzer, RabinKarpAlgorithm) {
+TEST(ModelAlgorithm, RabinKarpAlgorithm) {
   std::filesystem::path path_0{"tests/build/HIV-1_AF033819.3.txt"};
   std::filesystem::path path_1{"tests/build/test_1.txt"};
   std::filesystem::path path_2{"tests/build/output.txt"};
@@ -13,7 +13,7 @@ TEST(DNA_Analyzer, RabinKarpAlgorithm) {
   std::ofstream fi("tests/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
-  DNA_Analyzer analyzer;
+  ModelAlgorithm analyzer;
   analyzer.RabinKarpAlgorithm(path_0, path_1);
 
   std::cout.rdbuf(std::cout.rdbuf());
@@ -27,14 +27,14 @@ TEST(DNA_Analyzer, RabinKarpAlgorithm) {
   ASSERT_EQ(content, "65 9150 9182 \n");
 }
 
-TEST(DNA_Analyzer, NWAlgorithm) {
+TEST(ModelAlgorithm, NWAlgorithm) {
   std::filesystem::path path{"tests/build/test_2.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
   std::ofstream fi("tests/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
-  DNA_Analyzer analyzer;
+  ModelAlgorithm analyzer;
   analyzer.NWAlgorithm(path);
 
   std::cout.rdbuf(std::cout.rdbuf());
@@ -50,14 +50,14 @@ TEST(DNA_Analyzer, NWAlgorithm) {
             "\n-GGCGACAC-CCACCATACAT\n");
 }
 
-TEST(DNA_Analyzer, RegexAlgorithm) {
+TEST(ModelAlgorithm, RegexAlgorithm) {
   std::filesystem::path path{"tests/build/test_3.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
   std::ofstream fi("tests/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
-  DNA_Analyzer analyzer;
+  ModelAlgorithm analyzer;
   analyzer.RegexAlgorithm(path);
 
   std::cout.rdbuf(std::cout.rdbuf());
@@ -71,14 +71,14 @@ TEST(DNA_Analyzer, RegexAlgorithm) {
   ASSERT_EQ(content, "True\n");
 }
 
-TEST(DNA_Analyzer, KSimilarAlgorithm) {
+TEST(ModelAlgorithm, KSimilarAlgorithm) {
   std::filesystem::path path{"tests/build/test_4.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
   std::ofstream fi("tests/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
-  DNA_Analyzer analyzer;
+  ModelAlgorithm analyzer;
   analyzer.KSimilarAlgorithm(path);
 
   std::cout.rdbuf(std::cout.rdbuf());
@@ -92,14 +92,14 @@ TEST(DNA_Analyzer, KSimilarAlgorithm) {
   ASSERT_EQ(content, "3\n");
 }
 
-TEST(DNA_Analyzer, WindowAlgorithm) {
+TEST(ModelAlgorithm, WindowAlgorithm) {
   std::filesystem::path path{"tests/build/test_5.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
   std::ofstream fi("tests/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
-  DNA_Analyzer analyzer;
+  ModelAlgorithm analyzer;
   analyzer.WindowAlgorithm(path);
 
   std::cout.rdbuf(std::cout.rdbuf());

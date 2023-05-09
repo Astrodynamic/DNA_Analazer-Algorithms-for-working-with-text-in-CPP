@@ -29,8 +29,8 @@ enable_testing()
 
 add_executable(
   ${PROJECT_NAME}
-  ../algorithm/DNA_Analyzer.cc
-  ../algorithm/DNA_Analyzer.h
+  ../algorithm/model.cc
+  ../algorithm/model.h
   tests.cc
 )
 
