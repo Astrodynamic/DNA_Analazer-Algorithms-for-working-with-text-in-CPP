@@ -3,14 +3,14 @@
 #include "model.h"
 
 TEST(ModelAlgorithm, RabinKarpAlgorithm) {
-  std::filesystem::path path_0{"tests/build/HIV-1_AF033819.3.txt"};
-  std::filesystem::path path_1{"tests/build/test_1.txt"};
-  std::filesystem::path path_2{"tests/build/output.txt"};
+  std::filesystem::path path_0{"test/build/HIV-1_AF033819.3.txt"};
+  std::filesystem::path path_1{"test/build/test_1.txt"};
+  std::filesystem::path path_2{"test/build/output.txt"};
 
   ASSERT_TRUE(std::filesystem::exists(path_0));
   ASSERT_TRUE(std::filesystem::exists(path_1));
 
-  std::ofstream fi("tests/build/output.txt");
+  std::ofstream fi("test/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
   ModelAlgorithm analyzer;
@@ -20,7 +20,7 @@ TEST(ModelAlgorithm, RabinKarpAlgorithm) {
 
   fi.close();
 
-  std::ifstream fo("tests/build/output.txt");
+  std::ifstream fo("test/build/output.txt");
   std::string content((std::istreambuf_iterator<char>(fo)),
                       (std::istreambuf_iterator<char>()));
   std::cout << " ";
@@ -28,10 +28,10 @@ TEST(ModelAlgorithm, RabinKarpAlgorithm) {
 }
 
 TEST(ModelAlgorithm, NWAlgorithm) {
-  std::filesystem::path path{"tests/build/test_2.txt"};
+  std::filesystem::path path{"test/build/test_2.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
-  std::ofstream fi("tests/build/output.txt");
+  std::ofstream fi("test/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
   ModelAlgorithm analyzer;
@@ -41,7 +41,7 @@ TEST(ModelAlgorithm, NWAlgorithm) {
 
   fi.close();
 
-  std::ifstream fo("tests/build/output.txt");
+  std::ifstream fo("test/build/output.txt");
   std::string content((std::istreambuf_iterator<char>(fo)),
                       (std::istreambuf_iterator<char>()));
   std::cout << " ";
@@ -51,10 +51,10 @@ TEST(ModelAlgorithm, NWAlgorithm) {
 }
 
 TEST(ModelAlgorithm, RegexAlgorithm) {
-  std::filesystem::path path{"tests/build/test_3.txt"};
+  std::filesystem::path path{"test/build/test_3.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
-  std::ofstream fi("tests/build/output.txt");
+  std::ofstream fi("test/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
   ModelAlgorithm analyzer;
@@ -64,7 +64,7 @@ TEST(ModelAlgorithm, RegexAlgorithm) {
 
   fi.close();
 
-  std::ifstream fo("tests/build/output.txt");
+  std::ifstream fo("test/build/output.txt");
   std::string content((std::istreambuf_iterator<char>(fo)),
                       (std::istreambuf_iterator<char>()));
   std::cout << " ";
@@ -72,10 +72,10 @@ TEST(ModelAlgorithm, RegexAlgorithm) {
 }
 
 TEST(ModelAlgorithm, KSimilarAlgorithm) {
-  std::filesystem::path path{"tests/build/test_4.txt"};
+  std::filesystem::path path{"test/build/test_4.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
-  std::ofstream fi("tests/build/output.txt");
+  std::ofstream fi("test/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
   ModelAlgorithm analyzer;
@@ -85,7 +85,7 @@ TEST(ModelAlgorithm, KSimilarAlgorithm) {
 
   fi.close();
 
-  std::ifstream fo("tests/build/output.txt");
+  std::ifstream fo("test/build/output.txt");
   std::string content((std::istreambuf_iterator<char>(fo)),
                       (std::istreambuf_iterator<char>()));
   std::cout << " ";
@@ -93,10 +93,10 @@ TEST(ModelAlgorithm, KSimilarAlgorithm) {
 }
 
 TEST(ModelAlgorithm, WindowAlgorithm) {
-  std::filesystem::path path{"tests/build/test_5.txt"};
+  std::filesystem::path path{"test/build/test_5.txt"};
   ASSERT_TRUE(std::filesystem::exists(path));
 
-  std::ofstream fi("tests/build/output.txt");
+  std::ofstream fi("test/build/output.txt");
   std::cout.rdbuf(fi.rdbuf());
 
   ModelAlgorithm analyzer;
@@ -106,7 +106,7 @@ TEST(ModelAlgorithm, WindowAlgorithm) {
 
   fi.close();
 
-  std::ifstream fo("tests/build/output.txt");
+  std::ifstream fo("test/build/output.txt");
   std::string content((std::istreambuf_iterator<char>(fo)),
                       (std::istreambuf_iterator<char>()));
   std::cout << " ";
